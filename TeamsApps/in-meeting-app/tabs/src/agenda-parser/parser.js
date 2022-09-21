@@ -1,4 +1,3 @@
-import { Agenda } from "../models/agenda.types";
 import { getMeetingInfo } from "./meetingInfo";
 
 export const getAgendaItems = () => {
