@@ -1,0 +1,144 @@
+/* .App {
+  text-align: center;
+}
+  
+.container {
+  padding: 25px;
+}
+  
+h1 {
+  color: gray;
+}
+h2 {
+  font-size: .8em;
+}
+.PropName {
+  font-weight: bold;
+  color: #6264A7;
+}
+.Logo {
+  font-size: 45pt;
+  color: #6264A7;
+}
+.Error {
+  color: red;
+} */
+
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+* {
+	box-sizing: border-box;
+}
+
+.agenda-hack-container {
+/* 	background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
+  background-color: #eeeeee;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	min-height: 100vh;
+	font-family: 'Lato', sans-serif;
+    
+margin-left: 50%;
+padding-left: 200px;
+}
+/* @media only screen and (max-width: 767px) {
+    body {
+        left: 50%;
+    }
+} */
+
+.agenda-item {
+    margin-left: 30%;
+    height: calc(13px * var(--length));
+    border-left: 4px solid lightcoral;
+}
+.agenda-item.in-process, .agenda-item.not-done {
+border-left-style: dashed;
+}
+.agenda-item.in-process {
+animation: flash 3s linear infinite;
+}
+
+@keyframes flash {
+    50% {
+    border-left: 4px dashed transparent;
+    }
+}
+.level1 .time {
+  background-color: maroon;
+  border-radius: 0.8rem;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.5em;
+  margin-right: 5px;
+  text-align: center;
+  width: 1.5em;
+  outline: 2px solid rgba(44, 44, 44, 1);
+  transform: translateX(calc(-50% - 2px));
+}
+.level2 .time {
+  color: invert(maroon);
+  display: inline-block;
+  line-height: 1.5em;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: rgba(44, 44, 44, 1);
+  /* z-index: 111111; */
+  text-align: center;
+  width: 1.5em;
+  transform: translateX(calc(-50% - 2px));
+}
+.level1 .topic {
+  font-weight: bold;
+  font-size: 115%;
+}
+.level2 .topic {
+  font-size: 90%;
+}
+.time::after {
+  
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline-color: white;
+  outline-width: 4px;
+}
+
+
+/* @media only screen and (max-width: 1023px) {
+    .timeline-item-content {
+        max-width: 100%;
+    }
+} */
+
+/* @media only screen and (max-width: 767px) {
+    .timeline-item-content,
+    .timeline-item:nth-child(odd) .timeline-item-content {
+        padding: 15px 10px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .timeline-item-content .tag {
+        width: calc(100% - 10px);
+        text-align: center;
+    }
+
+    .timeline-item-content time {
+        margin-top: 20px;
+    }
+
+    .timeline-item-content a {
+        text-decoration: underline;
+    }
+
+    .timeline-item-content a::after {
+        display: none;
+    }
+} */
