@@ -2,7 +2,7 @@ export const getMeetingInfo = () => {
     return `
 <<Agenda>>
 System Health   
-   Front-end services - Veeru -5m
+   Frontend services - Veeru -5m
    Back-end services  - Srek-5m
    Incidents-Mayank -5m
    Performance-Harman-5m

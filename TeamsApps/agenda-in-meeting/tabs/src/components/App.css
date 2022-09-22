@@ -33,16 +33,8 @@ h2 {
 .agenda-hack-container {
 /* 	background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
   background-color: #eeeeee;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-
 	min-height: 100vh;
 	font-family: 'Lato', sans-serif;
-    
-margin-left: 50%;
-padding-left: 200px;
 }
 /* @media only screen and (max-width: 767px) {
     body {
@@ -51,7 +43,6 @@ padding-left: 200px;
 } */
 
 .agenda-item {
-    margin-left: 30%;
     height: calc(13px * var(--length));
     border-left: 4px solid lightcoral;
 }
@@ -67,32 +58,38 @@ animation: flash 3s linear infinite;
     border-left: 4px dashed transparent;
     }
 }
+.time, .topic {
+  display: inline-block;
+  transform: translateX(calc(-1em - 0px));
+}
+.topic, .speaker {
+  line-height: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .level1 .time {
   background-color: maroon;
   border-radius: 0.8rem;
   color: #ffffff;
-  display: inline-block;
   font-weight: bold;
   line-height: 1.5em;
   margin-right: 5px;
   text-align: center;
   width: 1.5em;
   outline: 2px solid rgba(44, 44, 44, 1);
-  transform: translateX(calc(-50% - 2px));
 }
 .level2 .time {
-  color: invert(maroon);
+  color: maroon;
   display: inline-block;
   line-height: 1.5em;
   margin-top: 5px;
   margin-bottom: 5px;
-  background-color: rgba(44, 44, 44, 1);
-  /* z-index: 111111; */
+  background-color: rgba(238, 238, 238, 1);
   text-align: center;
   width: 1.5em;
-  transform: translateX(calc(-50% - 2px));
 }
 .level1 .topic {
+  display: inline-block;
   font-weight: bold;
   font-size: 115%;
 }

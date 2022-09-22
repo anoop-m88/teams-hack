@@ -8,10 +8,11 @@ import * as parser from '../agenda-parser/parser';
 const TimelineItem = ({ data, marker, last }) => (
   <div>
       {/* @ts-expect-error */}
-    <div className={`agenda-item ${data?.status} ${data?.level===2? 'level2': 'level1'}`} style={{'--length': data?.time}}>
+    <div className={`agenda-item ${data?.status} ${data?.level===2? 'level2': 'level1'}`} style={{'--length': data?.timeInMinutes}}>
       
       <div className='time'>{marker[0]+=last}</div>
-      <span className="topic">{data?.topic || 'End'}</span>
+      <span className="topic">{data?.text || 'End'}</span>
+      <p className="speaker">{data?.speaker}</p>
     </div>
   </div>
 );
@@ -54,6 +55,7 @@ class Tab extends React.Component {
     let userPrincipleName = this.state.context['userPrincipalName'] ?? "";
     const timelineData = parser.getAgendaItems();
     const accumulation = [0];
+    timelineData.forEach(v=>{v.level = 2; v.status='not-done'; })
 console.log(timelineData)
 
     return (
@@ -64,18 +66,16 @@ console.log(timelineData)
       <h3>Meeting ID:</h3>
       <p>{meetingId}</p>
       <p>doesAppHaveSharePermission={this.state.canShowStage}</p>
-      <p>{timelineData.length}</p>
-
+ 
       <MediaQuery maxWidth={2000}>
         <h3>This is the side panel</h3>
-        <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/apps-in-teams-meetings/teams-apps-in-meetings">Need more info, open this document in new tab or window.</a>
 
         {timelineData.length > 0 && (
           <div className="timeline-container">
-              {/* {timelineData.map((data, idx, arr) => (
-                  <TimelineItem data={data} marker={accumulation} last={idx>0? arr[idx-1].time: 0} key={idx} />
+              {timelineData.map((data, idx, arr) => (
+                  <TimelineItem data={data} marker={accumulation} last={idx>0? arr[idx-1].timeInMinutes: 0} key={idx} />
               ))}
-              <TimelineItem data={null} marker={accumulation} last={timelineData[timelineData.length-1].time} key={timelineData.length} /> */}
+              <TimelineItem data={null} marker={accumulation} last={timelineData[timelineData.length-1].timeInMinutes} key={timelineData.length} />
           </div>
         )}
       </MediaQuery>
