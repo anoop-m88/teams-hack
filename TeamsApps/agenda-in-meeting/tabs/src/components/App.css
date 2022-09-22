@@ -44,10 +44,19 @@ h2 {
 
 .agenda-item {
     height: calc(13px * var(--length));
-    border-left: 4px solid lightcoral;
+    border-left: 10px solid grey;
+}
+.agenda-item::before {
+  counter-reset: x var(--overlay);
+  content: '';
+  width: 6px;
+  height: calc(13px * var(--overlay));
+  background-color: red;
+  position: absolute;
+  margin-left: -8px;
 }
 .agenda-item.in-process, .agenda-item.not-done {
-border-left-style: dashed;
+/* border-left-style: dashed; */
 }
 .agenda-item.in-process {
 animation: flash 3s linear infinite;
@@ -55,7 +64,7 @@ animation: flash 3s linear infinite;
 
 @keyframes flash {
     50% {
-    border-left: 4px dashed transparent;
+    border-left: 4px dashed grey;
     }
 }
 .time, .topic {
@@ -64,8 +73,7 @@ animation: flash 3s linear infinite;
 }
 .topic, .speaker {
   line-height: 1.2em;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0 0 5px auto;
 }
 .level1 .time {
   background-color: maroon;
@@ -97,7 +105,6 @@ animation: flash 3s linear infinite;
   font-size: 90%;
 }
 .time::after {
-  
   content: '';
   position: absolute;
   left: 0;
@@ -107,7 +114,15 @@ animation: flash 3s linear infinite;
   outline-width: 4px;
 }
 
-
+.agenda-item.yay .time {
+  /* transition: transform 2s ease; */
+  animation: puff 2s ease;
+}
+@keyframes puff {
+  50% {
+    transform: scale(2) ;
+  }
+}
 /* @media only screen and (max-width: 1023px) {
     .timeline-item-content {
         max-width: 100%;
