@@ -10,11 +10,13 @@ body {
 @media screen and (min-width: 321px) {
   .agenda-hack-container {
     --background: #eeeeee;
+    --animationLength: 0;
   }
 }
 @media screen and (max-width: 320px) {
   .agenda-hack-container {
     --background: #1c1c1c;
+    --animationLength: 2s;
   }
 }
 .agenda-hack-container {
@@ -25,13 +27,19 @@ body {
   font-family: 'Lato', sans-serif;
   --text-color: #c1c1c1;
   --line-height: 1.2em;
+  --glow-color: #d35400;
 }
-h1, h3, h5, .light-text {
+h3, h5, .light-text {
   color: var(--text-color);
+}
+h3 {
+  text-align: center;
+  color: var(--glow-color);
+  filter:sepia();
+  margin: 1.5em auto;
 }
 .agenda-item {
     margin-left: 2.5em;
-    margin-right: -3em;
     height: calc(13px * var(--length));
     border-left: 10px solid grey;
     position: relative;
@@ -43,7 +51,8 @@ h1, h3, h5, .light-text {
   height: calc(13px * var(--overlay));
   background-color: green;
   position: absolute;
-  margin-left: -8px;
+  left: -8px;
+  top: 5px;
 }
 .agenda-item.in-process, .agenda-item.not-done {
 /* border-left-style: dashed; */
@@ -79,6 +88,9 @@ h1, h3, h5, .light-text {
   width: fit-content;
   /* margin-left: 0.5em; */
   position: relative;
+
+  /* transition: .5s;
+  transform: scale(1); */
 }
 .topic::before {
   content: ' ';
@@ -89,11 +101,11 @@ h1, h3, h5, .light-text {
   /* box-shadow: -1px -1px 1px rgb(0 0 0 / 0%); */
   /* left: calc(0.5em - 1px); */
   /* top: calc(20%); */
-  transform: rotate(-45deg);
+  transform: rotate(-18deg);
   width: 0.4em;
-  height: 0.4em;
-  left: -3px;
-  top: calc(0.5 * var(--line-height) - 2px);
+  height: 0.8em;
+  left: -1px;
+  top: calc(0.5 * var(--line-height) - 7px);
   position: absolute;
 }
 .topic::after {
@@ -101,7 +113,7 @@ h1, h3, h5, .light-text {
   color: white;
   /* box-shadow: -1px -1px 1px rgb(0 0 0 / 20%); */
   left: -1.1em;
-  /* top: -0.1em; */
+  top: -0.5em;
   width: 1em;
   height: 2px;
   position: absolute;
@@ -147,16 +159,24 @@ h1, h3, h5, .light-text {
   outline-width: 4px;
 }
 
+
 .agenda-item.yay .topic {
+  animation: puff var(--animationLength) 3 ease-in-out ;
   /* transition: transform 2s ease; */
-  animation: puff 2s ease;
+  /* z-index: -1; */
+  /* transform: scale(1.2); */
+  
+
 }
 @keyframes puff {
-  50% {
-    transform: scale(2) ;
+  0% {
+    color: var(--glow-color);
+    text-shadow: 0 0 5px var(--glow-color);
+    box-shadow: 0 0 5px var(--glow-color);
   }
-}
-.agenda-item.yay .topic::after {
-  /* transition: transform 2s ease; */
-  content: '';
+  25% {
+    text-shadow: 0 0 5px var(--glow-color);
+    box-shadow: 0 0 15px var(--glow-color);
+    filter: blur(1px);
+  }
 }
