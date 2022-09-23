@@ -4,7 +4,7 @@ import MediaQuery from "react-responsive";
 import "./App.css";
 import * as parser from "../agenda-parser/parser";
 
-const TimelineItem = ({ data, marker, last, index, nowDone }) => (
+const TimelineItem = ({ data, marker, last, index, nowDone, topicRef }) => (
   <div>
     {/* @ts-expect-error */}
     <div
@@ -14,8 +14,8 @@ const TimelineItem = ({ data, marker, last, index, nowDone }) => (
       style={{ "--length": data?.timeInMinutes, "--overlay": data?.overlay }}
     >
       <div className="time">{(marker[0] += last)}</div>
-      <span className="topic">{data?.text || "End"}</span>
-      <p className="speaker">{data?.speaker}</p>
+      {data?.text && <p className="topic" ref={topicRef} onAnimationEnd={()=>topicRef.current.classList.remove('yay')}>{data?.text}</p>}
+      {data?.speaker && <p className="speaker">{data?.speaker}</p>}
     </div>
   </div>
 );
@@ -25,11 +25,12 @@ class Tab extends React.Component {
     super(props);
     this.nowDone = -1;
     this.intervalId = undefined;
+    this.topicRef = React.createRef();
     this.state = {
       context: {},
       timelineData: parser
         .getAgendaItems()
-        .map((v) => ({ ...v, level: 2, status: "not-done", overlay: 0 })),
+        .map((v) => ({ ...v, level: 1, status: "not-done", overlay: 0 })),
     };
   }
 
@@ -106,17 +107,17 @@ class Tab extends React.Component {
     return (
       <div className="agenda-hack-container">
         <h1>In-meeting app sample</h1>
-        <h3>Principle Name:</h3>
-        <p>{userPrincipleName}</p>
-        <h3>Meeting ID:</h3>
+        <h5>Organizer:</h5>
+        <p className="light-text">{userPrincipleName}</p>
+        {/* <h3>Meeting ID:</h3>
         <p>{meetingId}</p>
-        <p>doesAppHaveSharePermission={this.state.canShowStage}</p>
+        <p>doesAppHaveSharePermission={this.state.canShowStage}</p> */}
 
-        <MediaQuery maxWidth={2000}>
-          <h3>This is the side panel</h3>
+        {/* <MediaQuery minWidth={320}> */}
+          <h3>Meeting agenda</h3>
 
           {this.state.timelineData.length > 0 && (
-            <div className="timeline-container">
+            <div>
               {this.state.timelineData.map((data, idx, arr) => (
                 <TimelineItem
                   data={data}
@@ -124,6 +125,7 @@ class Tab extends React.Component {
                   last={idx > 0 ? arr[idx - 1].timeInMinutes : 0}
                   index={idx}
                   nowDone={this.state.nowDone}
+                  topicRef={this.topicRef}
                   key={idx}
                   />
                   ))}
@@ -136,11 +138,12 @@ class Tab extends React.Component {
                 }
                 index={this.state.timelineData.length}
                 nowDone={this.state.nowDone}
+                topicRef={this.topicRef}
                 key={this.state.timelineData.length}
                 />
             </div>
           )}
-        </MediaQuery>
+        {/* </MediaQuery> */}
       </div>
     );
   }
