@@ -10,24 +10,22 @@ body {
 @media screen and (min-width: 321px) {
   .agenda-hack-container {
     --background: #eeeeee;
-    --animationLength: 0;
   }
 }
 @media screen and (max-width: 320px) {
   .agenda-hack-container {
     --background: #1c1c1c;
-    --animationLength: 2s;
   }
 }
 .agenda-hack-container {
-/* 	background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
   background-color: var(--background);
   min-height: 100vh;
   width: 100vw;
   font-family: 'Lato', sans-serif;
-  --text-color: #c1c1c1;
+  --text-color: #aaaaaa;
   --line-height: 1.2em;
   --glow-color: #d35400;
+  --unit: 15px;
 }
 h3, h5, .light-text {
   color: var(--text-color);
@@ -40,7 +38,7 @@ h3 {
 }
 .agenda-item {
     margin-left: 2.5em;
-    height: calc(13px * var(--length));
+    height: calc(var(--unit) * var(--length));
     border-left: 10px solid grey;
     position: relative;
 }
@@ -48,19 +46,15 @@ h3 {
   counter-reset: x var(--overlay);
   content: '';
   width: 6px;
-  height: calc(13px * var(--overlay));
+  height: calc(var(--unit) * var(--overlay));
   background-color: green;
   position: absolute;
   left: -8px;
   top: 5px;
 }
-.agenda-item.in-process, .agenda-item.not-done {
-/* border-left-style: dashed; */
-}
 .agenda-item.in-process {
   animation: flash 3s linear infinite;
 }
-
 @keyframes flash {
     50% {
     border-left: 4px dashed grey;
@@ -86,11 +80,7 @@ h3 {
   padding: 1px 4px 2px 0.5em;
   background-color: var(--text-color);
   width: fit-content;
-  /* margin-left: 0.5em; */
   position: relative;
-
-  /* transition: .5s;
-  transform: scale(1); */
 }
 .topic::before {
   content: ' ';
@@ -99,8 +89,6 @@ h3 {
   border-top: 1px solid lightgrey;
   border-radius: -5px;
   /* box-shadow: -1px -1px 1px rgb(0 0 0 / 0%); */
-  /* left: calc(0.5em - 1px); */
-  /* top: calc(20%); */
   transform: rotate(-18deg);
   width: 0.4em;
   height: 0.8em;
@@ -111,7 +99,6 @@ h3 {
 .topic::after {
   content: '-';
   color: white;
-  /* box-shadow: -1px -1px 1px rgb(0 0 0 / 20%); */
   left: -1.1em;
   top: -0.5em;
   width: 1em;
@@ -131,18 +118,7 @@ h3 {
   margin-top: 4px;
   transform: translateX(-2.5em);
 }
-/* .level2 .time {
-  color: maroon;
-  display: inline-block;
-  line-height: 1.5em;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  background-color: rgba(238, 238, 238, 1);
-  text-align: center;
-  width: 1.5em;
-} */
 .level1 .topic {
-  /* display: inline-block; */
   font-weight: bold;
   margin-left: -1em;
 }
@@ -161,12 +137,7 @@ h3 {
 
 
 .agenda-item.yay .topic {
-  animation: puff var(--animationLength) 3 ease-in-out ;
-  /* transition: transform 2s ease; */
-  /* z-index: -1; */
-  /* transform: scale(1.2); */
-  
-
+  animation: puff 2s 3 ease-in-out ;
 }
 @keyframes puff {
   0% {

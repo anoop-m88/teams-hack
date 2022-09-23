@@ -6,13 +6,13 @@ import * as parser from "../agenda-parser/parser";
 
 const ONETICK = 2000; //60000; 
 
-const TimelineItem = ({ data, marker, last, index, nowDone }) => (
+const TimelineItem = ({ data, marker, last, index, nowStart, postMeeting }) => (
   <div>
     <div
-      className={`agenda-item ${nowDone===index? 'yay':''} ${data?.status} ${
+      className={`agenda-item ${!postMeeting && nowStart===index? 'yay':''} ${data?.status} ${
         data?.level === 2 ? "level2" : "level1"
       }`}
-      style={{ "--length": data?.timeInMinutes, "--overlay": data?.overlay }}
+      style={{ "--length": data?.timeInMinutes, "--overlay": postMeeting? data?.timeInMinutes: data?.overlay }}
     >
       <div className="time">{(marker[0] += last)}</div>
       {data?.text && <p className="topic">{data?.text}</p>}
@@ -21,10 +21,44 @@ const TimelineItem = ({ data, marker, last, index, nowDone }) => (
   </div>
 );
 
+const Content = ({postMeeting, state, accumulation})=> (
+  <>
+    <h3>Meeting agenda</h3>
+
+    {state.timelineData.length > 0 && (
+      <div>
+        {state.timelineData.map((data, idx, arr) => (
+          <TimelineItem
+            data={data}
+            marker={accumulation}
+            last={idx > 0 ? arr[idx - 1].timeInMinutes : 0}
+            index={idx}
+            nowStart={state.nowStart}
+            postMeeting={postMeeting}
+            key={idx}
+            />
+            ))}
+        <TimelineItem
+          data={null}
+          marker={accumulation}
+          last={
+            state.timelineData[state.timelineData.length - 1]
+            .timeInMinutes
+          }
+          index={state.timelineData.length}
+          nowStart={state.nowStart}
+          postMeeting={postMeeting}
+          key={state.timelineData.length}
+          />
+      </div>
+    )}
+  </>
+)
+
 class Tab extends React.Component {
   constructor(props) {
     super(props);
-    this.nowDone = -1;
+    this.nowStart = -1;
     this.intervalId = undefined;
     this.state = {
       context: {},
@@ -86,13 +120,13 @@ class Tab extends React.Component {
             ...v,
             overlay: v.status === "in-progress" ? v.overlay + 1 : v.overlay,
             status: getStatus(v, i),
-            // nowDone: v.status === 'in-progress' && getStatus(v,i) === 'done'? i: -1,
+            // nowStart: v.status === 'in-progress' && getStatus(v,i) === 'done'? i: -1,
           })),
         };
         newState.timelineData.forEach((v,i,arr)=>{
           if (i>0 && arr[i-1].status==='done' && v.status==='not-done') v.status = 'in-progress';
           if (old.timelineData[i].status === 'not-done' &&  v.status==='in-progress')
-            newState.nowDone = i;
+            newState.nowStart = i;
         })
         console.dir(newState);
         return newState;
@@ -124,36 +158,12 @@ class Tab extends React.Component {
         <p>{meetingId}</p>
         <p>doesAppHaveSharePermission={this.state.canShowStage}</p> */}
 
-        <MediaQuery minWidth={200}>
-          <h3>Meeting agenda</h3>
-
-          {this.state.timelineData.length > 0 && (
-            <div>
-              {this.state.timelineData.map((data, idx, arr) => (
-                <TimelineItem
-                  data={data}
-                  marker={accumulation}
-                  last={idx > 0 ? arr[idx - 1].timeInMinutes : 0}
-                  index={idx}
-                  nowDone={this.state.nowDone}
-                  key={idx}
-                  />
-                  ))}
-              <TimelineItem
-                data={null}
-                marker={accumulation}
-
-                last={
-                  this.state.timelineData[this.state.timelineData.length - 1]
-                  .timeInMinutes
-                }
-                index={this.state.timelineData.length}
-                nowDone={this.state.nowDone}
-                key={this.state.timelineData.length}
-                />
-            </div>
-          )}
+        <MediaQuery minWidth={600}>
+          <Content postMeeting={true} state={this.state} accumulation={accumulation} />
         </MediaQuery>
+
+        <MediaQuery maxWidth={320}>
+        <Content postMeeting={false} state={this.state} accumulation={accumulation} />        </MediaQuery>
       </div>
     );
   }
